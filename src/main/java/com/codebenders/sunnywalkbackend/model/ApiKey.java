@@ -4,5 +4,5 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "api_keys")
-public class ApiKeys {
+public class ApiKey {
 }
