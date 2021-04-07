@@ -3,7 +3,7 @@ package com.codebenders.sunnywalkbackend.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "users_preferences")
+@Table(name = "user_preference")
 public class UserPreferences {
     @Id
     @Column(name = "user_id")
