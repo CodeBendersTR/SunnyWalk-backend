@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "user_preference")
-public class UserPreferences {
+public class UserPreference {
     @Id
     @Column(name = "user_id")
     Integer userId;
