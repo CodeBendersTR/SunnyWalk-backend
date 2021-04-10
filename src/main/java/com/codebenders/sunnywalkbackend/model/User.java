@@ -6,7 +6,6 @@ import javax.persistence.*;
 @Table(name = "user")
 public class User {
     @Id
-    @GeneratedValue
     @Column(name = "user_id")
     Integer userId;
 
