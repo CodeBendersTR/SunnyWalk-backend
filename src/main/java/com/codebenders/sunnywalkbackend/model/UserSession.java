@@ -4,6 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "users_sessions")
+@Table(name = "user_session")
 public class UserSession {
 }

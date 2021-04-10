@@ -3,9 +3,8 @@ package com.codebenders.sunnywalkbackend.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User {
-
     @Id
     @GeneratedValue
     @Column(name = "user_id")
