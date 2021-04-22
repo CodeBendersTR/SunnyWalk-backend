@@ -22,9 +22,6 @@ public class UserSession {
     @Column(name = "active")
     Boolean active;
 
-    @Column(name = "ip_address")
-    String ipAddress;
-
     public String getSessionId() {
         return sessionId;
     }
@@ -57,11 +54,4 @@ public class UserSession {
         this.active = active;
     }
 
-    public String getIpAddress() {
-        return ipAddress;
-    }
-
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
-    }
 }

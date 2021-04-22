@@ -5,12 +5,13 @@ import javax.persistence.*;
 @Entity
 @Table(name = "user_credential")
 public class UserCredential {
-    @Id
-    @Column(name = "user_id")
-    int userId;
 
+    @Id
     @Column(name = "password_hash")
     String passwordHash;
+
+    @Column(name = "user_id")
+    int userId;
 
     @Column(name = "role")
     String role;

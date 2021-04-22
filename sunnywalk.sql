@@ -97,8 +97,9 @@ DROP TABLE IF EXISTS `user_credential`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user_credential` (
   `user_id` int unsigned DEFAULT NULL,
-  `password_hash` varchar(255) DEFAULT NULL,
+  `password_hash` varchar(255) NOT NULL,
   `role` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`password_hash`),
   KEY `fk_credentials_users_idx` (`user_id`),
   CONSTRAINT `fk_credentials_users` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -134,7 +135,6 @@ CREATE TABLE `user_session` (
   `user_id` int unsigned DEFAULT NULL,
   `opened` datetime DEFAULT NULL,
   `active` tinyint DEFAULT NULL,
-  `ip_address` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`session_id`),
   UNIQUE KEY `session_id_UNIQUE` (`session_id`),
   KEY `fk_sessions_users_idx` (`user_id`),
@@ -178,4 +178,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-20 16:43:30
+-- Dump completed on 2021-04-22 19:48:57
