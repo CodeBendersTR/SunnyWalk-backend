@@ -5,7 +5,7 @@ import com.codebenders.sunnywalkbackend.model.UserCredential;
 import com.codebenders.sunnywalkbackend.model.UserSession;
 import com.codebenders.sunnywalkbackend.repository.UserCredentialRepository;
 import com.codebenders.sunnywalkbackend.repository.UserRepository;
-import com.codebenders.sunnywalkbackend.repository.UserSessionReposiory;
+import com.codebenders.sunnywalkbackend.repository.UserSessionRepository;
 import org.apache.tomcat.util.buf.HexUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ public class AuthService implements IAuthService{
     UserCredentialRepository userCredentialRepository;
 
     @Autowired
-    UserSessionReposiory userSessionReposiory;
+    UserSessionRepository userSessionRepository;
 
     // public methods
     public String login(String email, String password) {
@@ -52,13 +52,13 @@ public class AuthService implements IAuthService{
         userSession.setActive(true);
         userSession.setOpened(new Date());
 
-        userSessionReposiory.save(userSession);
+        userSessionRepository.save(userSession);
 
         return sessionId;
     }
 
     public Boolean isUserLoggedIn(String sessionId) {
-        Optional<UserSession> userSession = userSessionReposiory.findById(sessionId);
+        Optional<UserSession> userSession = userSessionRepository.findById(sessionId);
 
         if (!userSession.isPresent()) {
             return false;
@@ -68,9 +68,9 @@ public class AuthService implements IAuthService{
     }
 
     public void logout(String sessionId) {
-        UserSession userSession = userSessionReposiory.getOne(sessionId);
+        UserSession userSession = userSessionRepository.getOne(sessionId);
         userSession.setActive(false);
-        userSessionReposiory.save(userSession);
+        userSessionRepository.save(userSession);
     }
 
     // private methods
