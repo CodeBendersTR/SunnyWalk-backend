@@ -1,5 +1,6 @@
 package com.codebenders.sunnywalkbackend.controller;
 
+import com.codebenders.sunnywalkbackend.dto.ProfileDto;
 import com.codebenders.sunnywalkbackend.dto.RegisterDto;
 import com.codebenders.sunnywalkbackend.service.IUserService;
 import com.codebenders.sunnywalkbackend.service.UserService;
@@ -23,6 +24,15 @@ public class UserController {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User already exists");
     }
     return ResponseEntity.status(HttpStatus.OK).body(userId.toString());
+
+  }
+
+  @PutMapping("/profile/{userId}")
+  public ResponseEntity<String> profile(@RequestBody ProfileDto profileDto){
+    String userName = userService.updateUser(profileDto.getEmail(), profileDto.getCurrentPassword(), profileDto.getNewPassword(), profileDto.getLocation(), profileDto.getUserType(),
+      profileDto.getNotification(), profileDto.getWeather());
+
+    return ResponseEntity.status(HttpStatus.OK).body("profile found");
 
   }
 

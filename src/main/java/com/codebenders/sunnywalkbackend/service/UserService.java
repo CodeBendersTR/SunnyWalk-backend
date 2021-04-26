@@ -76,6 +76,35 @@ public class UserService implements IUserService {
     return tempUserId;
   }
 
+  public String updateUser(String email, String currentPassword, String newPassword, String location, String userType, String notification, String weather){
+    User user = userRepository.findUserByEmail(email);
+    //user.se(location);
+    user.setUserType(userType);
+    Integer userId = user.getUserId();
+
+    //check for userId and passwordHash , if matches replace old pwdHash with new pwdHash
+    UserCredential userCredential = userCredentialRepository.getByUserId(userId);
+    String currentPasswordHash = hashString(userId + currentPassword);
+    if(userCredential.getPasswordHash().equals(currentPasswordHash)){
+      String passwordHash = hashString(userId + newPassword);
+      userCredential.setPasswordHash(passwordHash);
+    }
+
+    //userCredentialRepository.save(userCredential);
+    UserPreference userPreference = userPreferenceRepository.getByUserId(userId);
+    if(notification.equals("Email")){
+      userPreference.setMailNotifications(true);
+    }
+
+    if(notification.equals("Web Notification")){
+      userPreference.setPushNotifications(true);
+    }
+
+    userPreference.setWeather(weather);
+
+    return (user.getFirstName() + user.getLastName());
+  }
+
   // private methods
   private String hashString(String stringToHash) {
     MessageDigest digest = null;
