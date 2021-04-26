@@ -31,9 +31,9 @@ DROP TABLE IF EXISTS `api_key`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `api_key` (
-  `service` varchar(255) NOT NULL,
+  `api_service` varchar(255) NOT NULL,
   `api_key` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`service`)
+  PRIMARY KEY (`api_service`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -61,30 +61,9 @@ CREATE TABLE `location` (
   `location_name` varchar(255) DEFAULT NULL,
   `latitude` varchar(12) DEFAULT NULL,
   `longitude` varchar(12) DEFAULT NULL,
-  `check` tinyint DEFAULT NULL,
+  `is_checked` tinyint DEFAULT NULL,
   PRIMARY KEY (`location_id`),
   UNIQUE KEY `location_id_UNIQUE` (`location_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `user`
---
-
-DROP TABLE IF EXISTS `user`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `user` (
-  `user_id` int unsigned NOT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `first_name` varchar(255) DEFAULT NULL,
-  `last_name` varchar(255) DEFAULT NULL,
-  `gender` varchar(255) DEFAULT NULL,
-  `dob` datetime DEFAULT NULL,
-  `location_id` int DEFAULT NULL,
-  `user_type` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`user_id`),
-  UNIQUE KEY `id_UNIQUE` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -101,7 +80,7 @@ CREATE TABLE `user_credential` (
   `role` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`password_hash`),
   KEY `fk_credentials_users_idx` (`user_id`),
-  CONSTRAINT `fk_credentials_users` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
+  CONSTRAINT `fk_credentials_users` FOREIGN KEY (`user_id`) REFERENCES `user_t` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -119,7 +98,7 @@ CREATE TABLE `user_preference` (
   `mail_notifications` tinyint DEFAULT NULL,
   `cookies` tinyint DEFAULT NULL,
   KEY `fk_preferences_users_idx` (`user_id`),
-  CONSTRAINT `fk_preferences_users` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
+  CONSTRAINT `fk_preferences_users` FOREIGN KEY (`user_id`) REFERENCES `user_t` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -138,7 +117,28 @@ CREATE TABLE `user_session` (
   PRIMARY KEY (`session_id`),
   UNIQUE KEY `session_id_UNIQUE` (`session_id`),
   KEY `fk_sessions_users_idx` (`user_id`),
-  CONSTRAINT `fk_sessions_users` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
+  CONSTRAINT `fk_sessions_users` FOREIGN KEY (`user_id`) REFERENCES `user_t` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `user_t`
+--
+
+DROP TABLE IF EXISTS `user_t`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user_t` (
+  `user_id` int unsigned NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `first_name` varchar(255) DEFAULT NULL,
+  `last_name` varchar(255) DEFAULT NULL,
+  `gender` varchar(255) DEFAULT NULL,
+  `dob` datetime DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `user_type` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `id_UNIQUE` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -164,7 +164,7 @@ CREATE TABLE `walk` (
   KEY `fk_walks_users_idx` (`user_id`),
   KEY `fk_locations_users_idx` (`location_id`),
   CONSTRAINT `fk_walks_locations` FOREIGN KEY (`location_id`) REFERENCES `location` (`location_id`),
-  CONSTRAINT `fk_walks_users` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
+  CONSTRAINT `fk_walks_users` FOREIGN KEY (`user_id`) REFERENCES `user_t` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
@@ -178,4 +178,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-22 19:48:57
+-- Dump completed on 2021-04-26 10:51:16

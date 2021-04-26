@@ -18,7 +18,7 @@ public class Location {
     @Column(name = "longitude")
     String longitude;
 
-    @Column(name = "check")
+    @Column(name = "is_checked")
     Boolean check;
 
     public int getLocationId() {

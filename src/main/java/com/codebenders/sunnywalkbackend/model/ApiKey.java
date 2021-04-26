@@ -2,11 +2,11 @@ package com.codebenders.sunnywalkbackend.model;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "api_key")
 @Table(name = "api_key")
 public class ApiKey {
     @Id
-    @Column(name = "service")
+    @Column(name = "api_service")
     String service;
 
     @Column(name = "api_key")
