@@ -1,6 +1,7 @@
 package com.codebenders.sunnywalkbackend.controller;
 
 import com.codebenders.sunnywalkbackend.service.IEmailService;
+import com.codebenders.sunnywalkbackend.service.INotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -14,11 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class NotificationController {
 
     @Autowired
-    IEmailService emailService;
+    INotificationService notificationService;
 
     @Scheduled(fixedRate = 60000)
     @GetMapping("/email")
     public void sendEmail() {
-        emailService.sendEmail("Take your sunny walk in 10 minutes", "mariusgrygore@gmail.com");
+        notificationService.checkIfUsersNeedToBeNotified();
     }
 }
