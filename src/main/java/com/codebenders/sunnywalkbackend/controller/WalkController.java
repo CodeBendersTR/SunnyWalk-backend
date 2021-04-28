@@ -1,12 +1,12 @@
 package com.codebenders.sunnywalkbackend.controller;
 
+import com.codebenders.sunnywalkbackend.dto.AddWalkDto;
 import com.codebenders.sunnywalkbackend.dto.WalkSuggestionDto;
 import com.codebenders.sunnywalkbackend.service.IWalkService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
@@ -20,5 +20,11 @@ public class WalkController {
     @GetMapping("/suggestion/{userId}")
     public ArrayList<WalkSuggestionDto> getWalkSuggestion(@PathVariable int userId) {
         return walkService.getSuggestion(userId);
+    }
+
+    @PostMapping("/add/{userId}")
+    public ResponseEntity<String> addWalk(@RequestBody AddWalkDto addWalkDto, @PathVariable int userId) {
+        walkService.addWalk(userId, addWalkDto);
+        return new ResponseEntity<String>("Walk added successfully", HttpStatus.OK);
     }
 }
