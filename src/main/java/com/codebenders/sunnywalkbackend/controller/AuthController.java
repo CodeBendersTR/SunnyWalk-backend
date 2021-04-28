@@ -29,12 +29,11 @@ public class AuthController {
     }
 
     @PutMapping("/logout")
-    public ResponseEntity<String> logout(@RequestParam String sessionId) {
-        if (!authService.isUserLoggedIn(sessionId)) {
+    public ResponseEntity<String> logout(@RequestParam(required = false) String sessionId) {
+        if (sessionId == null || !authService.isUserLoggedIn(sessionId)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not logged in");
-        } else {
-            authService.logout(sessionId);
-            return ResponseEntity.status(HttpStatus.OK).body("Logged out successfully");
         }
+        authService.logout(sessionId);
+        return ResponseEntity.status(HttpStatus.OK).body("Logged out successfully");
     }
 }

@@ -82,7 +82,7 @@ public class WalkService implements IWalkService {
     @Override
     public void addWalk(int userId, AddWalkDto addWalkDto) {
         Location newLocation = new Location();
-        newLocation.setLocationId(new Random().nextInt());
+        newLocation.setLocationId(Math.abs(new Random().nextInt()));
         newLocation.setLocationName(addWalkDto.getLocationName());
         newLocation.setLatitude(addWalkDto.getLat());
         newLocation.setLongitude(addWalkDto.getLon());
