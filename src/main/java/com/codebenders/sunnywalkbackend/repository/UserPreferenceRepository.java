@@ -4,4 +4,5 @@ import com.codebenders.sunnywalkbackend.model.UserPreference;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserPreferenceRepository extends JpaRepository<UserPreference, Integer> {
+  public UserPreference getByUserId(Integer userId);
 }
