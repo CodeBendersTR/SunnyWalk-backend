@@ -76,33 +76,39 @@ public class UserService implements IUserService {
     return tempUserId;
   }
 
-  public String updateUser(String email, String currentPassword, String newPassword, String location, String userType, String notification, String weather){
-    User user = userRepository.findUserByEmail(email);
-    //user.se(location);
-    user.setUserType(userType);
-    Integer userId = user.getUserId();
-
-    //check for userId and passwordHash , if matches replace old pwdHash with new pwdHash
-    UserCredential userCredential = userCredentialRepository.getByUserId(userId);
-    String currentPasswordHash = hashString(userId + currentPassword);
-    if(userCredential.getPasswordHash().equals(currentPasswordHash)){
-      String passwordHash = hashString(userId + newPassword);
-      userCredential.setPasswordHash(passwordHash);
+  public String updateUser(int userId, String currentPassword, String newPassword, String location, String userType, String notification, String weather){
+    // check for userId and passwordHash , if matches replace old pwdHash with new pwdHash
+    if (!currentPassword.equals("") && !newPassword.equals("")) {
+      UserCredential userCredential = userCredentialRepository.getByUserId(userId);
+      String currentPasswordHash = hashString(userId + currentPassword);
+      if (userCredential.getPasswordHash().equals(currentPasswordHash)) {
+        String passwordHash = hashString(userId + newPassword);
+        userCredential.setPasswordHash(passwordHash);
+        userCredentialRepository.save(userCredential);
+      }
     }
 
-    //userCredentialRepository.save(userCredential);
+    // userCredentialRepository.save(userCredential);
     UserPreference userPreference = userPreferenceRepository.getByUserId(userId);
     if(notification.equals("Email")){
       userPreference.setMailNotifications(true);
+      userPreference.setPushNotifications(false);
     }
 
     if(notification.equals("Web Notification")){
       userPreference.setPushNotifications(true);
+      userPreference.setMailNotifications(false);
     }
 
     userPreference.setWeather(weather);
+    userPreferenceRepository.save(userPreference);
 
-    return (user.getFirstName() + user.getLastName());
+    // user type
+    User user = userRepository.getOne(userId);
+    user.setUserType(userType);
+    userRepository.save(user);
+
+    return "Success";
   }
 
   // private methods

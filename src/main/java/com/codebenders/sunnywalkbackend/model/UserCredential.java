@@ -7,11 +7,11 @@ import javax.persistence.*;
 public class UserCredential {
 
     @Id
-    @Column(name = "password_hash")
-    String passwordHash;
-
     @Column(name = "user_id")
     int userId;
+
+    @Column(name = "password_hash")
+    String passwordHash;
 
     @Column(name = "role")
     String role;
