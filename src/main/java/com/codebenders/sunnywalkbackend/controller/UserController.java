@@ -26,7 +26,12 @@ public class UserController {
 
   @PostMapping("/register")
   public ResponseEntity<String> register(@RequestBody RegisterDto registerDto) {
-    Integer userId = userService.addUser(registerDto.getEmail(), registerDto.getPassword(), registerDto.getFirstName(), registerDto.getLastName());
+    Integer userId = userService.addUser(
+            registerDto.getEmail(),
+            registerDto.getPassword(),
+            registerDto.getFirstName(),
+            registerDto.getLastName(),
+            registerDto.getCity());
 
     if(userId == null){
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User already exists");

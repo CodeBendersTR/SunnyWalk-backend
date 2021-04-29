@@ -21,7 +21,7 @@ public class WeatherService implements IWeatherService {
     @Autowired
     ApiKeyRepository apiKeyRepository;
 
-    RestTemplate restTemplate = new RestTemplate();
+
 
     private ApiWeatherForecastDto callWeatherApi(String lat, String lon) {
         String weatherApiUrl = "https://api.openweathermap.org/data/2.5/onecall";
@@ -36,10 +36,8 @@ public class WeatherService implements IWeatherService {
                 .queryParam("units", "metric")
                 .queryParam("appid", weatherApiKey.getApiKey());
 
-
+        RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> weatherResponse = restTemplate.getForEntity(builder.toUriString(), String.class);
-
-        ApiWeatherForecastDto weatherForecast;
 
         try {
             return mapper.readValue(weatherResponse.getBody(), ApiWeatherForecastDto.class);

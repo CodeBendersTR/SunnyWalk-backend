@@ -1,8 +1,10 @@
 package com.codebenders.sunnywalkbackend.service;
 
+import com.codebenders.sunnywalkbackend.model.Location;
 import com.codebenders.sunnywalkbackend.model.User;
 import com.codebenders.sunnywalkbackend.model.UserCredential;
 import com.codebenders.sunnywalkbackend.model.UserPreference;
+import com.codebenders.sunnywalkbackend.repository.LocationRepository;
 import com.codebenders.sunnywalkbackend.repository.UserCredentialRepository;
 import com.codebenders.sunnywalkbackend.repository.UserPreferenceRepository;
 import com.codebenders.sunnywalkbackend.repository.UserRepository;
@@ -31,7 +33,21 @@ public class UserService implements IUserService {
   @Autowired
   UserPreferenceRepository userPreferenceRepository;
 
-  public Integer addUser(String email, String password, String firstName, String lastName){
+  @Autowired
+  ILocationService locationService;
+
+  @Autowired
+  LocationRepository locationRepository;
+
+  public Integer addUser(String email, String password, String firstName, String lastName, String city){
+    Random random = new Random();
+
+    // add location
+    Location newLocation = locationService.getLocationFromName(city);
+    newLocation.setLocationId(Math.abs(random.nextInt()));
+    newLocation.setCheck(false);
+
+    // add user
     User user = userRepository.findUserByEmail(email);
 
     if(user != null){
@@ -39,41 +55,43 @@ public class UserService implements IUserService {
     }
 
     User newUser = new User();
-    Random addRandom = new Random();
 
-    Integer tempUserId = Math.abs(addRandom.nextInt());
-
-    newUser.setUserId(tempUserId);
+    newUser.setUserId(Math.abs(random.nextInt()));
     newUser.setEmail(email);
     newUser.setFirstName(firstName);
     newUser.setLastName(lastName);
     newUser.setDob(null);
     newUser.setGender(null);
-    newUser.setLocationId(-1);
+    newUser.setLocationId(newLocation.getLocationId());
     newUser.setUserType(null);
 
+    locationRepository.save(newLocation);
     userRepository.save(newUser);
 
+    // add password
     UserCredential userCredential = new UserCredential();
 
-    String passwordHash = hashString(tempUserId + password);
+    String passwordHash = hashString(newUser.getUserId() + password);
 
-    userCredential.setUserId(tempUserId);
+    userCredential.setUserId(newUser.getUserId());
     userCredential.setPasswordHash(passwordHash);
     userCredential.setRole(null);
 
     userCredentialRepository.save(userCredential);
 
+    // add preferences
     UserPreference userPreference = new UserPreference();
 
-    userPreference.setUserId(tempUserId);
+    userPreference.setUserId(newUser.getUserId());
     userPreference.setWeather(null);
     userPreference.setPushNotifications(null);
     userPreference.setMailNotifications(null);
     userPreference.setCookies(null);
 
     userPreferenceRepository.save(userPreference);
-    return tempUserId;
+
+
+    return newUser.getUserId();
   }
 
   public String updateUser(int userId, String currentPassword, String newPassword, String location, String userType, String notification, String weather){
