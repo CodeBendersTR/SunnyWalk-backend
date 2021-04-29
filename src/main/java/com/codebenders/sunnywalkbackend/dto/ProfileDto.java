@@ -1,21 +1,12 @@
 package com.codebenders.sunnywalkbackend.dto;
 
 public class ProfileDto {
-  String email;
   String currentPassword;
   String newPassword;
   String location;
   String userType;
   String notification;
   String weather;
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
 
   public String getCurrentPassword() {
     return currentPassword;
