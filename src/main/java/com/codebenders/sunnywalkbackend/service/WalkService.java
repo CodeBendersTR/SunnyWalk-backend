@@ -1,18 +1,19 @@
 package com.codebenders.sunnywalkbackend.service;
 
+import com.codebenders.sunnywalkbackend.dto.AddWalkDto;
 import com.codebenders.sunnywalkbackend.dto.ApiWeatherForecastHourlyDto;
 import com.codebenders.sunnywalkbackend.dto.WalkSuggestionDto;
 import com.codebenders.sunnywalkbackend.model.Location;
 import com.codebenders.sunnywalkbackend.model.User;
+import com.codebenders.sunnywalkbackend.model.Walk;
 import com.codebenders.sunnywalkbackend.repository.LocationRepository;
 import com.codebenders.sunnywalkbackend.repository.UserRepository;
+import com.codebenders.sunnywalkbackend.repository.WalkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.*;
 
 @Service
 public class WalkService implements IWalkService {
@@ -22,6 +23,9 @@ public class WalkService implements IWalkService {
 
     @Autowired
     LocationRepository locationRepository;
+
+    @Autowired
+    WalkRepository walkRepository;
 
     @Autowired
     IWeatherService weatherService;
@@ -73,6 +77,30 @@ public class WalkService implements IWalkService {
         }
 
         return walkSuggestions;
+    }
+
+    @Override
+    public void addWalk(int userId, AddWalkDto addWalkDto) {
+        Location newLocation = new Location();
+        newLocation.setLocationId(Math.abs(new Random().nextInt()));
+        newLocation.setLocationName(addWalkDto.getLocationName());
+        newLocation.setLatitude(addWalkDto.getLat());
+        newLocation.setLongitude(addWalkDto.getLon());
+        newLocation.setCheck(false);
+        locationRepository.save(newLocation);
+
+        Walk newWalk = new Walk();
+        newWalk.setWalkId(Math.abs(Math.abs(new Random().nextInt())));
+        newWalk.setUserId(userId);
+        newWalk.setLocationId(newLocation.getLocationId());
+        newWalk.setWeatherType("-");
+        newWalk.setTime(new Date(addWalkDto.getTime() * 1000));
+        newWalk.setDuration(30);
+        newWalk.setRating(addWalkDto.getRating());
+        newWalk.setDetails("-");
+        newWalk.setNotify(false);
+
+        walkRepository.save(newWalk);
     }
 
     private long getMidnight(int day) {

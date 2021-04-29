@@ -24,7 +24,6 @@ public class UserController {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User already exists");
     }
     return ResponseEntity.status(HttpStatus.OK).body(userId.toString());
-
   }
 
   @PutMapping("/profile/{userId}")
@@ -35,5 +34,4 @@ public class UserController {
     return ResponseEntity.status(HttpStatus.OK).body("profile found");
 
   }
-
 }
