@@ -7,6 +7,7 @@ public class RegisterDto {
   String password;
   String firstName;
   String lastName;
+  String city;
 
   public String getEmail() {
     return email;
@@ -38,5 +39,13 @@ public class RegisterDto {
 
   public void setLastName(String lastName) {
     this.lastName = lastName;
+  }
+
+  public String getCity() {
+    return city;
+  }
+
+  public void setCity(String city) {
+    this.city = city;
   }
 }
