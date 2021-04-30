@@ -45,4 +45,6 @@ public class WalkController {
         walkService.addWalk(userId, addWalkDto);
         return new ResponseEntity<String>("Walk added successfully", HttpStatus.OK);
     }
+
+
 }

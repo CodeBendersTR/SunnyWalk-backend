@@ -1,5 +1,6 @@
 package com.codebenders.sunnywalkbackend.service;
 
+import com.codebenders.sunnywalkbackend.dto.NotifyDto;
 import com.codebenders.sunnywalkbackend.model.User;
 import com.codebenders.sunnywalkbackend.model.Walk;
 import com.codebenders.sunnywalkbackend.repository.UserRepository;
@@ -44,5 +45,14 @@ public class NotificationService implements INotificationService {
             }
             walkRepository.save(walk);
         }
+    }
+
+    public String notifyUser(Integer userId, Boolean notify) {
+        Walk walk = walkRepository.getOne(userId);
+
+        walk.setNotify(notify);
+        walkRepository.save(walk);
+
+        return "Notified";
     }
 }

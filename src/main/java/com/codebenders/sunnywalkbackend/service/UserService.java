@@ -88,7 +88,6 @@ public class UserService implements IUserService {
       }
     }
 
-    // userCredentialRepository.save(userCredential);
     UserPreference userPreference = userPreferenceRepository.getByUserId(userId);
     if(notification.equals("Email")){
       userPreference.setMailNotifications(true);
