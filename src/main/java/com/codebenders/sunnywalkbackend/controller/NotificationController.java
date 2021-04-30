@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 @EnableScheduling
 @RestController
-@RequestMapping("/notify")
 public class NotificationController {
 
     @Autowired
@@ -33,16 +32,4 @@ public class NotificationController {
 
     @Autowired
     UserSessionRepository userSessionRepository;
-
-    @PutMapping("/walk")
-    public ResponseEntity<String> notifyUser(@RequestBody NotifyDto notifyDto, @RequestParam(required = false) String sessionId) {
-      System.out.println(sessionId);
-      if (sessionId == null || !authService.isUserLoggedIn(sessionId)) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User not logged in");
-      }
-      Integer userId = userSessionRepository.getOne(sessionId).getUserId();
-      String response = notificationService.notifyUser(userId, notifyDto.getNotify());
-
-      return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
 }

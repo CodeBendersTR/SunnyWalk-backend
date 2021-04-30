@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -47,12 +48,17 @@ public class NotificationService implements INotificationService {
         }
     }
 
-    public String notifyUser(Integer userId, Boolean notify) {
-        Walk walk = walkRepository.getOne(userId);
+    public String notifyUser(Integer userId, long time) {
+        User user = userRepository.getOne(userId);
 
-        walk.setNotify(notify);
+        Walk walk = new Walk();
+        walk.setWalkId(Math.abs(new Random().nextInt()));
+        walk.setUserId(userId);
+        walk.setNotify(true);
+        walk.setLocationId(user.getLocationId());
+        walk.setTime(new Date(time * 1000));
         walkRepository.save(walk);
 
-        return "Notified";
+        return "User will be notified";
     }
 }

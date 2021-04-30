@@ -1,13 +1,13 @@
 package com.codebenders.sunnywalkbackend.dto;
 
 public class NotifyDto {
-    Boolean notify;
+    long time;
 
-  public Boolean getNotify() {
-    return notify;
+  public long getTime() {
+    return time;
   }
 
-  public void setNotify(Boolean notify) {
-    this.notify = notify;
+  public void setTime(long time) {
+    this.time = time;
   }
 }

@@ -1,11 +1,13 @@
 package com.codebenders.sunnywalkbackend.controller;
 
 import com.codebenders.sunnywalkbackend.dto.AddWalkDto;
+import com.codebenders.sunnywalkbackend.dto.NotifyDto;
 import com.codebenders.sunnywalkbackend.dto.WalkSuggestionDto;
 import com.codebenders.sunnywalkbackend.model.User;
 import com.codebenders.sunnywalkbackend.repository.UserRepository;
 import com.codebenders.sunnywalkbackend.repository.UserSessionRepository;
 import com.codebenders.sunnywalkbackend.service.IAuthService;
+import com.codebenders.sunnywalkbackend.service.INotificationService;
 import com.codebenders.sunnywalkbackend.service.IWalkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,9 @@ public class WalkController {
 
     @Autowired
     IAuthService authService;
+
+    @Autowired
+    INotificationService notificationService;
 
     @Autowired
     UserSessionRepository userSessionRepository;
@@ -46,5 +51,14 @@ public class WalkController {
         return new ResponseEntity<String>("Walk added successfully", HttpStatus.OK);
     }
 
+    @PostMapping("/notify")
+    public ResponseEntity<String> notifyUser(@RequestBody NotifyDto notifyDto, @RequestParam(required = false) String sessionId) {
+        if (sessionId == null || !authService.isUserLoggedIn(sessionId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User not logged in");
+        }
+        Integer userId = userSessionRepository.getOne(sessionId).getUserId();
+        String response = notificationService.notifyUser(userId, notifyDto.getTime());
 
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
 }
