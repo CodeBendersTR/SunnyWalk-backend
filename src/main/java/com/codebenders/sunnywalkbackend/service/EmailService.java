@@ -17,7 +17,7 @@ public class EmailService implements IEmailService {
     @Override
     public void sendEmail(String message, String emailAddress) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-
+        System.out.println("Sending email to " + emailAddress);
         try {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
             mimeMessageHelper.setSubject("Sunny Walk reminder");

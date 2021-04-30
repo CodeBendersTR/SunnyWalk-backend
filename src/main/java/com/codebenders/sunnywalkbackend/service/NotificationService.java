@@ -1,5 +1,6 @@
 package com.codebenders.sunnywalkbackend.service;
 
+import com.codebenders.sunnywalkbackend.dto.NotifyDto;
 import com.codebenders.sunnywalkbackend.model.User;
 import com.codebenders.sunnywalkbackend.model.Walk;
 import com.codebenders.sunnywalkbackend.repository.UserRepository;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -44,5 +46,19 @@ public class NotificationService implements INotificationService {
             }
             walkRepository.save(walk);
         }
+    }
+
+    public String notifyUser(Integer userId, long time) {
+        User user = userRepository.getOne(userId);
+
+        Walk walk = new Walk();
+        walk.setWalkId(Math.abs(new Random().nextInt()));
+        walk.setUserId(userId);
+        walk.setNotify(true);
+        walk.setLocationId(user.getLocationId());
+        walk.setTime(new Date(time * 1000));
+        walkRepository.save(walk);
+
+        return "User will be notified";
     }
 }
